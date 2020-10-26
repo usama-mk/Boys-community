@@ -9,6 +9,7 @@ import './style.css';
 import Images from './Pages/Images/Images';
 import Newsletter from './Pages/Newsletter/Newsletter';
 import Videos from './Pages/Videos/Videos';
+import { storage } from './firebase';
 
 
 export class App extends Component {
@@ -16,11 +17,90 @@ export class App extends Component {
     landingPageData: {},
   }
   getlandingPageData() { 
-    this.setState({landingPageData : data});
+    this.setState({landingPageData : data, 
+                       imageUrls: null,
+                       videoUrls: null,
+                       pdfUrls: null          
+    });
+  }
+  getImages(){
+    const that=this;
+    const IU=[];
+
+     storage.ref("images").listAll().then(function(result){
+        result.items.forEach(function(imageRef){
+            // console.log("Image reference"+ imageRef);
+            imageRef.getDownloadURL().then(function(url){
+                console.log(url)
+                IU.push(url);
+                // that.setState({imageUrls: IU}
+               
+           that.setState({...that.state,imageUrls: IU}, ()=> console.log(that.state.imageUrls));
+                
+                console.log(that.state)
+  
+            })
+            
+            
+        })
+       
+    });
+
+  }
+
+  getVideos(){
+    const that=this;
+    const IU=[];
+
+     storage.ref("videos").listAll().then(function(result){
+        result.items.forEach(function(imageRef){
+            // console.log("video reference"+ imageRef);
+            imageRef.getDownloadURL().then(function(url){
+                console.log(url)
+                IU.push(url);
+                // that.setState({imageUrls: IU}    
+           that.setState({...that.state,videoUrls: IU}, ()=> console.log(that.state.videoUrls));
+                
+                console.log(that.state)
+  
+            })
+            
+            
+        })
+       
+    });
+
+  }
+  getPdfs(){
+    const that=this;
+    const IU=[];
+
+     storage.ref("pdfs").listAll().then(function(result){
+        result.items.forEach(function(imageRef){
+            // console.log("Image reference"+ imageRef);
+            imageRef.getDownloadURL().then(function(url){
+                console.log(url)
+                IU.push(url);
+                // that.setState({imageUrls: IU}
+               
+           that.setState({...that.state,pdfUrls: IU}, ()=> console.log(that.state.pdfUrls));
+                
+                console.log(that.state)
+  
+            })
+            
+            
+        })
+       
+    });
+
   }
 
   componentDidMount() {
     this.getlandingPageData();
+    this.getImages();
+    this.getVideos();
+    this.getPdfs();
   }
 
 
@@ -31,9 +111,9 @@ export class App extends Component {
      <Header/>
      <Switch>
       <Route exact path='/' render={()=>(<Home data={this.state.landingPageData.Header} />)}  />
-      <Route exact path='/images' render={()=>(<Images data={this.state.landingPageData.Images} />)}  />
-      <Route exact path='/videos' render={()=>(< Videos data={this.state.landingPageData.Videos} />)}  />
-      <Route exact path='/newsletter' render={()=>(<Newsletter data={this.state.landingPageData.Images} />)}  />
+      <Route exact path='/images' render={()=>(<Images data={this.state.imageUrls} />)}  />
+      <Route exact path='/videos' render={()=>(< Videos data={this.state.videoUrls} />)}  />
+      <Route exact path='/newsletter' render={()=>(<Newsletter data={this.state.pdfUrls} />)}  />
        
     
      </Switch>

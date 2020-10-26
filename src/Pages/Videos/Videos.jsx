@@ -48,24 +48,24 @@ const useStyles = makeStyles((theme) => ({
 const Videos=(props)=> {
     
     const classes = useStyles();
-    const videoArray= props.data;
+    const videoUrlsArray= props.data;
     return (
         <div>
             <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {videoArray.map((videoData) => (
-              <Grid item key={videoData} xs={12} sm={6} md={4}>
+            {videoUrlsArray? videoUrlsArray.map((videoUrl) => (
+              <Grid item key={videoUrl} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                 <Player
       playsInline
       poster="https://cdn.vox-cdn.com/thumbor/PrT3w2zUdK37BZk35jXXCaIwUuY=/0x0:2040x1360/1200x800/filters:focal(857x517:1183x843)/cdn.vox-cdn.com/uploads/chorus_image/image/64758257/acastro_180403_1777_youtube_0002.0.0.jpg"
-      src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+      src={videoUrl}
     />
                  
                 </Card>
               </Grid>
-            ))}
+            )): <div></div>}
           </Grid>
         </Container>
         </div>

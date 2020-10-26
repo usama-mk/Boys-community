@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Player } from 'video-react';
+import { storage } from '../../firebase';
+import { CloudUpload } from '@material-ui/icons';
 
 
 
@@ -43,12 +45,53 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(6),
     },
   }));
-  const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  
+ 
 
 const Videos=(props)=> {
+    const [video, setVideo] = useState(null);
+    const [progress, setProgress] = useState(0);
     
     const classes = useStyles();
     const videoUrlsArray= props.data;
+
+    const uploadFileHandler = () => {
+        if (video) {
+            const uploadTask = storage.ref(`videos/${video.name}`).put(video);
+            uploadTask.on(
+                "state_changed",
+                snapshot => {
+                    const progress = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                    setProgress(progress);
+                },
+                error => {
+                    console.log(error);
+                },
+                () => {
+                    // storage.ref("images").child(image.name).getDownloadURL().then(url => {
+                    //     urlArray.push(url);
+                    //     console.log(urlArray);
+                    //     db.collection("imagesData").add({
+                    //         imageUrl: url,
+                    //         imageName: image.name
+                    //     });
+    
+                    // })
+                }
+            )
+        }
+    };
+    
+    const selectFileHandler = (event) => {
+        if (event.target.files[0]) {
+            setVideo(event.target.files[0]);
+        }
+    
+    }
+
     return (
         <div>
             <Container className={classes.cardGrid} maxWidth="md">
@@ -65,28 +108,24 @@ const Videos=(props)=> {
                  
                 </Card>
               </Grid>
-            )): <div></div>}
+            )): <div>FETCHING DATA..</div>}
           </Grid>
         </Container>
+        <input type="file" onChange={selectFileHandler} id="upload-button" />
+
+<Button
+    onClick={uploadFileHandler}
+    variant="contained"
+    color="primary"
+    // className="uploadButton"
+    startIcon={<CloudUpload />}
+>
+    Upload
+</Button>
+<br/>
+<progress value={progress} max="100" />
+                <br />
         </div>
     )
 }
 export default Videos;
-
-// After CardMedia
- {/* <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe the content.
-                    </Typography>
-                  </CardContent> */}
-                  {/* <CardActions>
-                    <Button size="small" color="primary">
-                      View
-                    </Button>
-                    <Button size="small" color="primary">
-                      Edit
-                    </Button>
-                  </CardActions> */}

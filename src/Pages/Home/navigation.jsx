@@ -11,19 +11,22 @@ import Menu from '@material-ui/core/Menu';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import { Book, Camera, Home, Image, VideoLabel, VideoLabelRounded, VideoLibrary } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
   title: {
     [theme.breakpoints.down("xs")]:{
       flexGrow: 1,
       
-    }
+    },
+    color: "white",
+    fontWeight: "bold"
     
   },
   headerOptions: {
@@ -76,14 +79,17 @@ const Header=(props)=> {
   return (
     <div className={classes.root}>
   
-      <AppBar position="static">
+      <AppBar color="primary" position="static">
         <Toolbar>
-        <IconButton edge="start" className={classes.menuButton} 
+        <IconButton  edge="start" className={classes.menuButton} 
               color="inherit" aria-label="menu" 
               onClick={()=> handleButtonClick('/')}
               >
-              <Typography variant="h6" className={classes.title} >
-            Home
+              <Typography variant="h6"  className={classes.title} >
+                <div style={{display:"flex"}}>
+                <Home/> Home 
+                </div>
+            
           </Typography>
             </IconButton>
           
@@ -129,9 +135,9 @@ const Header=(props)=> {
               ): 
               (
                 <div className={classes.headerOptions}>
-               <Button variant="contained" onClick={()=> handleButtonClick('/images')} >Images</Button>
-               <Button variant="contained" onClick={()=> handleButtonClick('/videos')} >Videos</Button>
-               <Button variant="contained" onClick={()=> handleButtonClick('/newsletter')} >Newsletter</Button>
+               <Button startIcon={<Image style={{color: "blue"}} />}  variant="contained" onClick={()=> handleButtonClick('/images')} >Images</Button>
+               <Button startIcon={<VideoLibrary style={{color: "red"}} />} variant="contained" onClick={()=> handleButtonClick('/videos')} >Videos</Button>
+               <Button startIcon={<Book style={{color: "green"}} />}variant="contained" onClick={()=> handleButtonClick('/newsletter')} >Newsletter</Button>
               </div>
               )
               

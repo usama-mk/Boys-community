@@ -11,7 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { Book, Camera, Home, Image, Person, Phone, VideoLabel, VideoLabelRounded, VideoLibrary } from '@material-ui/icons';
+import { Book, Camera, Home, Image, Person, Phone, VideoLabel, VideoLabelRounded, VideoLibrary, VpnKey } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,6 +82,10 @@ const Header=(props)=> {
       menuTitle: "Contact Us",
       pageUrl: "/contactus"
     },
+    {
+      menuTitle: "Admin Login",
+      pageUrl: "/adminlogin"
+    },
   ];
 
   return (
@@ -148,6 +152,7 @@ const Header=(props)=> {
                <Button startIcon={<Book style={{color: "green"}} />}variant="contained" onClick={()=> handleButtonClick('/newsletter')} >Newsletter</Button>
                <Button startIcon={<Person style={{color: "green"}} />}variant="contained" onClick={()=> handleButtonClick('/pressreleases')} >Press Releases</Button>
                <Button startIcon={<Phone style={{color: "blue"}} />}variant="contained" onClick={()=> handleButtonClick('/contactus')} >Contact Us</Button>
+               <Button startIcon={<VpnKey style={{color: "blue"}} />}variant="contained" onClick={()=> handleButtonClick('/adminlogin')} >Admin Login</Button>
 
               </div>
               )

@@ -1,21 +1,23 @@
-import { IconButton } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
 import React, { Component, useState } from "react";
 import { db } from "../../firebase";
+import firebaseApp from '../../firebase';
 
 
 
 
 export class Home extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state={
       heading: "",
       subHeading: "",
       description: "",
       newsLeft:"",
       newsRight:"",
-      edit: false
+      edit: "",
+      admin: ""
     }
   }
 
@@ -47,11 +49,24 @@ export class Home extends Component {
   }
 
   componentDidMount(){
+    const that= this;
    
-    
+    firebaseApp.auth().onAuthStateChanged(function(user) {
+      if (user) {
+       that.setState({
+         ...that.state, admin:user
+       })
+      } else {
+        that.setState({
+          ...that.state, admin:""
+        })
+      }
+      });
   }
+  
 
   render() {
+    console.log(this.state.edit)
     return (
       <header id="header">
         <div className="intro">
@@ -59,14 +74,15 @@ export class Home extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-md-8 col-md-offset-2 intro-text">
+                
                   {this.state.edit? <input style={{background: "transparent", }} onKeyDown={this._handleKeyDown} name="heading" type="text" onChange={this.handleChange} value={this.state.heading}/>
                   : <div></div>
                   }
                   <h1 >
                    {this.state.heading}
-                   <IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
+                   {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
-                   </IconButton>
+                   </IconButton>:<div></div>}
                   
                     <span></span>
                   </h1>
@@ -75,17 +91,17 @@ export class Home extends Component {
                   }
                   <h2 style={{color:"white"}}>
                     {this.state.subHeading}
-                    <IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
+                    {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
-                   </IconButton>
+                   </IconButton>:<div></div>}
                   </h2>
                   {this.state.edit? <input style={{background: "transparent", }} onKeyDown={this._handleKeyDown} name="description" type="text" onChange={this.handleChange} value={this.state.description}/>
                   : <div></div>
                   }
                  <p >{this.state.description}</p>
-                 <IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
+                 {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
-                   </IconButton>
+                   </IconButton>:<div></div>}
                 </div>
               </div>
             </div>
@@ -96,9 +112,9 @@ export class Home extends Component {
 
 
         <div style={{width:"50%", maxWidth:"50%", wordWrap: "break-word",  }} >
-        <IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
+        {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
-                   </IconButton>
+                   </IconButton>:<div></div>}
                    {this.state.edit? <input style={{background: "transparent", }} onKeyDown={this._handleKeyDown} name="newsLeft" type="text" onChange={this.handleChange} value={this.state.newsLeft}/>
                   : <div></div>
                   }
@@ -106,9 +122,9 @@ export class Home extends Component {
         </div>
         <hr/>
         <div style={{width:"50%", maxWidth:"50%", wordWrap: "break-word", }} >
-        <IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
+        {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
-                   </IconButton>
+                   </IconButton>:<div></div>}
                    {this.state.edit? <input style={{background: "transparent", }} onKeyDown={this._handleKeyDown} name="newsRight" type="text" onChange={this.handleChange} value={this.state.newsRight}/>
                   : <div></div>
                   }

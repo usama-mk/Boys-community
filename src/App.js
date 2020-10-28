@@ -12,6 +12,8 @@ import Videos from './Pages/Videos/Videos';
 import { storage } from './firebase';
 import PressReleases from './Pages/PressReleases/PressReleases';
 import ContactUs from './Pages/ContactUs/ContactUs';
+import Login from './Pages/Login/Login';
+
 
 
 export class App extends Component {
@@ -22,7 +24,8 @@ export class App extends Component {
     this.setState({landingPageData : data, 
                        imageUrls: null,
                        videoUrls: null,
-                       pdfUrls: null          
+                       pdfUrls: null  ,
+                       user:""        
     });
   }
   getImages(){
@@ -104,6 +107,8 @@ export class App extends Component {
     this.getVideos();
     this.getPdfs();
   }
+  
+ 
 
 
   render() {
@@ -118,7 +123,8 @@ export class App extends Component {
       <Route exact path='/newsletter' render={()=>(<Newsletter data={this.state.pdfUrls} />)}  />
       <Route exact path='/pressreleases' render={()=>(<PressReleases data={this.state.pdfUrls} />)}  />
       <Route exact path='/contactus' render={()=>(<ContactUs data={this.state.pdfUrls} />)}  />
-       
+      <Route exact path='/adminlogin' render={()=>(<Login  />)}  />
+
     
      </Switch>
    </BrowserRouter>

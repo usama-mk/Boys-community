@@ -2,6 +2,7 @@ import { IconButton } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import React, { Component } from 'react'
 import { db } from '../../firebase';
+import firebaseApp from '../../firebase';
 
 export default class ContactUs extends Component {
     constructor(){
@@ -9,7 +10,8 @@ export default class ContactUs extends Component {
         this.state={
             phoneNumber:null,
             email:"",
-            edit: false,
+            edit:"",
+            admin:""
         }
     }
  _handleKeyDown = (e)=> {
@@ -35,6 +37,22 @@ export default class ContactUs extends Component {
         console.log(name);
         this.setState({...this.state, [name]:value})
       }
+
+      componentDidMount(){
+        const that= this;
+       
+        firebaseApp.auth().onAuthStateChanged(function(user) {
+          if (user) {
+           that.setState({
+             ...that.state, admin:user
+           })
+          } else {
+            that.setState({
+              ...that.state, admin:""
+            })
+          }
+          });
+      }
   
     render() {
         return (
@@ -42,6 +60,7 @@ export default class ContactUs extends Component {
                 <h1>
                     Contact Us
                 </h1>
+                
                 {this.state.edit? <input style={{background: "transparent", }} onKeyDown={this._handleKeyDown} name="phoneNumber" type="text" onChange={this.handleChange} value={this.state.phoneNumber}/>
                   : <div></div>
                   }
@@ -50,18 +69,18 @@ export default class ContactUs extends Component {
                     Phone number: {this.state.phoneNumber}
                 </h2>
                 
-                <IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
+                {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
-                   </IconButton>
+                   </IconButton>:<div></div>}
                 {this.state.edit? <input style={{background: "transparent", }} onKeyDown={this._handleKeyDown} name="email" type="text" onChange={this.handleChange} value={this.state.email}/>
                   : <div></div>
                   }
                 <h2>
                     Email: {this.state.email}
                 </h2>
-                <IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
+                {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
-                   </IconButton>
+                   </IconButton>:<div></div>}
             </div>
         )
     }

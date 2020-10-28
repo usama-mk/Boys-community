@@ -22,7 +22,41 @@ const Images=(props)=> {
     const images = imagesUrlsArray?imagesUrlsArray.map((imageUrl)=>{
         return imageUrl;
     }):[];
-   
+
+    const useStyles = makeStyles((theme) => ({
+        icon: {
+          marginRight: theme.spacing(2),
+        },
+        heroContent: {
+          backgroundColor: theme.palette.background.paper,
+          padding: theme.spacing(8, 0, 6),
+        },
+        heroButtons: {
+          marginTop: theme.spacing(4),
+        },
+        cardGrid: {
+          paddingTop: theme.spacing(8),
+          paddingBottom: theme.spacing(8),
+        },
+        card: {
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        },
+        cardMedia: {
+          paddingTop: '56.25%', // 16:9
+        },
+        cardContent: {
+          flexGrow: 1,
+        },
+        footer: {
+          backgroundColor: theme.palette.background.paper,
+          padding: theme.spacing(6),
+        },
+      }));
+      
+    
+    
      
     // const imageUrl = props.data[0].imageUrl
     const openImageViewer = useCallback(index => {
@@ -64,25 +98,38 @@ const Images=(props)=> {
         }
     };
 
-    const selectFileHandler = (event) => {
+const selectFileHandler = (event) => {
         if (event.target.files[0]) {
             setImage(event.target.files[0]);
         }
 
     }
+   const classes= useStyles();
     return (
-        <div>
+        <div >
+             <Container className={classes.cardGrid} maxWidth="md">
+            <Grid container spacing={4}>
+             
             {imagesUrlsArray? imagesUrlsArray.map((imageUrl, index) => (
-        <img
+                <Grid item xs={12} sm={6} md={4}>
+                <Card>
+                    
+                  <img 
           src={imageUrl}
           onClick={() => openImageViewer(index)}
           width="300"
           key={index}
-          style={{ margin: "2px" }}
+          style={{ margin: "2px", objectFit:"cover" }}
           alt=""
         />
+       
+        
+                </Card>
+                </Grid>
+                
+       
       )): <div> FETCHING DATA.. </div>}
-
+      
       {isViewerOpen && (
         <ReactSimpleImageViewer
           src={images}
@@ -93,6 +140,9 @@ const Images=(props)=> {
           }}
         />
       )}
+      <br/>
+
+ <Card style={{margin:"auto"}}>
       <input type="file" onChange={selectFileHandler} id="upload-button" />
 
 <Button
@@ -107,6 +157,10 @@ const Images=(props)=> {
 <br/>
 <progress value={progress} max="100" />
                 <br />
+      </Card>
+     
+                </Grid>
+                </Container>
         </div>
     )
 }

@@ -10,6 +10,8 @@ import Images from './Pages/Images/Images';
 import Newsletter from './Pages/Newsletter/Newsletter';
 import Videos from './Pages/Videos/Videos';
 import { storage } from './firebase';
+import PressReleases from './Pages/PressReleases/PressReleases';
+import ContactUs from './Pages/ContactUs/ContactUs';
 
 
 export class App extends Component {
@@ -114,6 +116,8 @@ export class App extends Component {
       <Route exact path='/images' render={()=>(<Images data={this.state.imageUrls} />)}  />
       <Route exact path='/videos' render={()=>(< Videos data={this.state.videoUrls} />)}  />
       <Route exact path='/newsletter' render={()=>(<Newsletter data={this.state.pdfUrls} />)}  />
+      <Route exact path='/pressreleases' render={()=>(<PressReleases data={this.state.pdfUrls} />)}  />
+      <Route exact path='/contactus' render={()=>(<ContactUs data={this.state.pdfUrls} />)}  />
        
     
      </Switch>

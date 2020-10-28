@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Player } from 'video-react';
 import { storage } from '../../firebase';
 import { CloudUpload } from '@material-ui/icons';
 
@@ -45,20 +44,18 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(6),
     },
   }));
-
   
- 
 
-const Videos=(props)=> {
-    const [video, setVideo] = useState(null);
-    const [progress, setProgress] = useState(0);
-    
+const PressReleases=(props)=> {
+    const pdfUrlsArray= props.data;
+    console.log(pdfUrlsArray);
     const classes = useStyles();
-    const videoUrlsArray= props.data;
+    const [pdf, setPdf] = useState(null);
+    const [progress, setProgress] = useState(0);
 
     const uploadFileHandler = () => {
-        if (video) {
-            const uploadTask = storage.ref(`videos/${video.name}`).put(video);
+        if (pdf) {
+            const uploadTask = storage.ref(`pdfs/${pdf.name}`).put(pdf);
             uploadTask.on(
                 "state_changed",
                 snapshot => {
@@ -71,15 +68,6 @@ const Videos=(props)=> {
                     console.log(error);
                 },
                 () => {
-                    // storage.ref("images").child(image.name).getDownloadURL().then(url => {
-                    //     urlArray.push(url);
-                    //     console.log(urlArray);
-                    //     db.collection("imagesData").add({
-                    //         imageUrl: url,
-                    //         imageName: image.name
-                    //     });
-    
-                    // })
                 }
             )
         }
@@ -87,24 +75,43 @@ const Videos=(props)=> {
     
     const selectFileHandler = (event) => {
         if (event.target.files[0]) {
-            setVideo(event.target.files[0]);
+            setPdf(event.target.files[0]);
         }
     
     }
-
+     
+    // const imageUrl = props.data[0].imageUrl
     return (
         <div>
             <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {videoUrlsArray? videoUrlsArray.map((videoUrl) => (
-              <Grid item key={videoUrl} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                <Player
-      playsInline
-      poster="https://cdn.vox-cdn.com/thumbor/PrT3w2zUdK37BZk35jXXCaIwUuY=/0x0:2040x1360/1200x800/filters:focal(857x517:1183x843)/cdn.vox-cdn.com/uploads/chorus_image/image/64758257/acastro_180403_1777_youtube_0002.0.0.jpg"
-      src={videoUrl}
-    />
+            {pdfUrlsArray? pdfUrlsArray.map((pdfUrl) => (
+              <Grid item key={pdfUrl} xs={12} sm={6} md={4}>
+                <Card   className={classes.card}>
+                  <CardMedia 
+                    className={classes.cardMedia}
+                    image="https://store-images.s-microsoft.com/image/apps.34200.14540311183413038.f028cadf-0853-4674-ad48-e9a3d9d1fab9.c5840b88-f3ae-4c44-be80-0da0a27b2193"
+                    title="Image title"
+                  />
+                   {/* <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      Heading
+                    </Typography>
+                    <Typography>
+                      This is a media card. You can use this section to describe the content.
+                    </Typography>
+                  </CardContent> */}
+                  <CardActions>
+                      <a style={{textDecoration: "none"}} href={pdfUrl} target="_blank">
+                    <Button size="small" color="primary">
+                      View
+                    </Button>
+                      </a>
+                    {/* <Button size="small" color="primary">
+                      Edit
+                    </Button> */}
+                  </CardActions>
                  
                 </Card>
               </Grid>
@@ -128,8 +135,9 @@ const Videos=(props)=> {
 <progress value={progress} max="100" />
                 <br />
         </Card>
-        
+       
         </div>
     )
 }
-export default Videos;
+export default PressReleases;
+

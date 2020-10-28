@@ -118,6 +118,8 @@ const Newsletter=(props)=> {
             )): <div>FETCHING DATA..</div>}
           </Grid>
         </Container>
+        <br/>
+        <Card style={{margin:"auto"}}>
         <input type="file" onChange={selectFileHandler} id="upload-button" />
 
 <Button
@@ -132,6 +134,8 @@ const Newsletter=(props)=> {
 <br/>
 <progress value={progress} max="100" />
                 <br />
+        </Card>
+        
         </div>
     )
 }

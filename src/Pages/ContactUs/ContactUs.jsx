@@ -1,6 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import React, { Component } from 'react'
+import { db } from '../../firebase';
 
 export default class ContactUs extends Component {
     constructor(){
@@ -15,6 +16,16 @@ export default class ContactUs extends Component {
         if (e.key === 'Enter') {
           console.log('do validate');
           this.setState({...this.state, edit: !this.state.edit});
+          db.collection("ContactUs").doc("1j8eoeVFtWZZN98InGZW").set({
+           email: this.state.email,
+           phoneNumber: this.state.phoneNumber
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
     
     
         }

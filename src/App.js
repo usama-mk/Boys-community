@@ -112,7 +112,7 @@ export class App extends Component {
      <BrowserRouter>
      <Header/>
      <Switch>
-      <Route exact path='/' render={()=>(<Home data={this.state.landingPageData.Header} />)}  />
+      <Route exact path='/' render={()=>(<Home />)}  />
       <Route exact path='/images' render={()=>(<Images data={this.state.imageUrls} />)}  />
       <Route exact path='/videos' render={()=>(< Videos data={this.state.videoUrls} />)}  />
       <Route exact path='/newsletter' render={()=>(<Newsletter data={this.state.pdfUrls} />)}  />

@@ -62,6 +62,21 @@ export class Home extends Component {
         })
       }
       });
+
+      db.collection("HomeDetails").get().then(snapshot =>{
+        const homeDetails=[];
+        snapshot.forEach(doc=>{
+            const data = doc.data();
+            homeDetails.push(data)
+        });
+        that.setState({...that.state,
+          heading: homeDetails[0].heading, 
+          subHeading: homeDetails[0].subHeading,
+          description: homeDetails[0].description,
+          newsLeft: homeDetails[0].newsLeft,
+          newsRight: homeDetails[0].newsRight
+          })
+    })
   }
   
 
@@ -93,7 +108,7 @@ export class Home extends Component {
                     {this.state.subHeading}
                     {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
-                   </IconButton>:<div></div>}
+                   </IconButton >:<div></div>}
                   </h2>
                   {this.state.edit? <input style={{background: "transparent", }} onKeyDown={this._handleKeyDown} name="description" type="text" onChange={this.handleChange} value={this.state.description}/>
                   : <div></div>

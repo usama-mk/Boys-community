@@ -52,6 +52,18 @@ export default class ContactUs extends Component {
             })
           }
           });
+
+        //   GET DATA FROM FIREBASE DB
+
+          db.collection("ContactUs").get().then(snapshot =>{
+              const contacts=[];
+              snapshot.forEach(doc=>{
+                  const data = doc.data();
+                  contacts.push(data)
+              });
+              console.log(contacts[0])
+              that.setState({...that.state,email: contacts[0].email, phoneNumber: contacts[0].phoneNumber})
+          })
       }
   
     render() {
@@ -66,7 +78,7 @@ export default class ContactUs extends Component {
                   }
                   
                 <h2>
-                    Phone number: {this.state.phoneNumber}
+                    Phone number: {this.state.phoneNumber?this.state.phoneNumber:"Fetching data.."}
                 </h2>
                 
                 {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
@@ -76,7 +88,7 @@ export default class ContactUs extends Component {
                   : <div></div>
                   }
                 <h2>
-                    Email: {this.state.email}
+                    Email: {this.state.email?this.state.email:"Fetching data.."}
                 </h2>
                 {this.state.admin?<IconButton style={{backgroundColor:"grey"}} onClick={()=>{ this.setState({...this.state, edit: !this.state.edit});}}>
                    <Edit/>
